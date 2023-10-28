@@ -3,6 +3,7 @@ import React from 'react';
 
 interface MyProps {
   updateData: (a: string) => void;
+  onFormSubmit: (a: string) => void;
 }
 class SearchBar extends React.Component<MyProps> {
   state = { term: '' };
@@ -11,7 +12,10 @@ class SearchBar extends React.Component<MyProps> {
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ term: event.target.value });
     this.props.updateData(event.target.value);
-    console.log(event.target.value);
+  };
+
+  handleClick = () => {
+    this.props.onFormSubmit(this.state.term);
   };
   render() {
     return (
@@ -31,7 +35,11 @@ class SearchBar extends React.Component<MyProps> {
               onChange={this.handleChange}
             />
           </div>
-          <button className="search-button" type="submit">
+          <button
+            className="search-button"
+            type="submit"
+            onClick={this.handleClick}
+          >
             Search
           </button>
         </form>

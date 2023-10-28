@@ -1,38 +1,26 @@
 import React from 'react';
+import ListItem from './ListItem';
+import { PeopleItem } from './ListItem/type';
 
-const searchTerm = '';
-// const LIMIT = 50;
-// const OFFSET = '0';
-//&page=
-// const API = `https://pokeapi.co/api/v2/pokemon/${searchTerm}?limit=${LIMIT}&offset=${OFFSET}`;
-const API = `https://swapi.dev/api/people/?search=${searchTerm}`;
-
-interface MyProps {}
+interface MyProps {
+  items: Array<PeopleItem>;
+}
 interface MyState {
   people: Array<Record<string, string>>;
 }
 class List extends React.Component<MyProps, MyState> {
   constructor(props: MyProps) {
     super(props);
-
-    this.state = {
-      people: [],
-    };
   }
 
-  componentDidMount() {
-    fetch(API)
-      .then((response) => response.json())
-      .then((data) => this.setState({ people: data.results }));
-  }
   render() {
-    const { people } = this.state;
+    const { items } = this.props;
 
     return (
-      <ul>
-        {people.map((p) => (
+      <ul className="list">
+        {items.map((p) => (
           <li key={p.name}>
-            <a href={p.url}>{p.name}</a>
+            <ListItem item={p} />
           </li>
         ))}
       </ul>
