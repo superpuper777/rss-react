@@ -9,8 +9,7 @@ interface MyState {
   searchTerm: string;
   people: Array<Record<string, string>>;
 }
-
-const SearchTermContext = React.createContext({});
+export const SearchTermContext = React.createContext('');
 class App extends React.Component<MyProps, MyState> {
   state = {
     searchTerm: '',
@@ -30,21 +29,21 @@ class App extends React.Component<MyProps, MyState> {
   };
 
   componentDidMount() {
-    this.onTermSubmit('');
+    this.onTermSubmit(localStorage.getItem('searchTerm') || '');
   }
 
   render() {
-    const { people } = this.state;
-    console.log(people);
+    const { people, searchTerm } = this.state;
+
     return (
       <div>
-        <SearchTermContext.Provider value={this.state}>
+        <SearchTermContext.Provider value={this.state.searchTerm}>
           <SearchBar
             onFormSubmit={this.onTermSubmit}
             updateData={this.updateData}
+            searchTerm={searchTerm}
           />
-          <List items={this.state.people} />
-          <div>{this.state.searchTerm}</div>
+          <List items={people} />
         </SearchTermContext.Provider>
       </div>
     );
