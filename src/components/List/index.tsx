@@ -2,17 +2,11 @@ import React from 'react';
 import ListItem from './ListItem';
 import { PeopleItem } from './ListItem/type';
 
-interface MyProps {
+interface Props {
   items: Array<PeopleItem>;
 }
-interface MyState {
-  people: Array<Record<string, string>>;
-}
-class List extends React.Component<MyProps, MyState> {
-  constructor(props: MyProps) {
-    super(props);
-  }
 
+class List extends React.Component<Props> {
   render() {
     const { items } = this.props;
 

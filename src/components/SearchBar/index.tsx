@@ -2,12 +2,12 @@ import React from 'react';
 // import Context from '../../Context';
 import { SearchTermContext } from '../../App';
 
-interface MyProps {
+interface Props {
   updateData: (a: string) => void;
   onFormSubmit: (a: string) => void;
   searchTerm: string;
 }
-class SearchBar extends React.Component<MyProps> {
+class SearchBar extends React.Component<Props> {
   handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) =>
     event.preventDefault();
 
@@ -21,9 +21,6 @@ class SearchBar extends React.Component<MyProps> {
   };
 
   render() {
-    if (this.props.searchTerm === 'boom') {
-      throw new Error('BOOM');
-    }
     return (
       <SearchTermContext.Consumer>
         {(searchTerm) => (

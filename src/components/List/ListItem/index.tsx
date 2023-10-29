@@ -3,12 +3,10 @@ import React from 'react';
 import { PeopleItem } from './type';
 import './style.css';
 
-interface MyProps {
+interface Props {
   item: PeopleItem;
 }
-
-interface MyState {}
-class ListItem extends React.Component<MyProps, MyState> {
+class ListItem extends React.Component<Props> {
   render() {
     const { item } = this.props;
     return (

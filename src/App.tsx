@@ -4,16 +4,18 @@ import './App.css';
 import List from './components/List';
 import SearchBar from './components/SearchBar';
 
-interface MyProps {}
-interface MyState {
+interface Props {}
+interface State {
   searchTerm: string;
   people: Array<Record<string, string>>;
+  isError: boolean;
 }
 export const SearchTermContext = React.createContext('');
-class App extends React.Component<MyProps, MyState> {
+class App extends React.Component<Props, State> {
   state = {
     searchTerm: '',
     people: [],
+    isError: false,
   };
 
   updateData = (value: string) => {
@@ -21,11 +23,14 @@ class App extends React.Component<MyProps, MyState> {
   };
 
   onTermSubmit = async (searchTerm: string) => {
-    ////&page=
     const API = `https://swapi.dev/api/people/?search=${searchTerm}`;
     fetch(API)
       .then((response) => response.json())
       .then((data) => this.setState({ people: data.results }));
+  };
+
+  handleClick = () => {
+    this.setState({ isError: true });
   };
 
   componentDidMount() {
@@ -33,6 +38,9 @@ class App extends React.Component<MyProps, MyState> {
   }
 
   render() {
+    if (this.state.isError) {
+      throw new Error('I crashed!');
+    }
     const { people, searchTerm } = this.state;
 
     return (
@@ -44,6 +52,13 @@ class App extends React.Component<MyProps, MyState> {
             searchTerm={searchTerm}
           />
           <List items={people} />
+          <button
+            className="search-button"
+            type="submit"
+            onClick={this.handleClick}
+          >
+            Crash app
+          </button>
         </SearchTermContext.Provider>
       </div>
     );
