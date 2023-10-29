@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { PeopleItem } from './type';
-import './style.css';
+import './styles.css';
 
 interface Props {
   item: PeopleItem;

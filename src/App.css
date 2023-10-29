@@ -1,21 +1,34 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
 }
 
-body {
-  margin: 0;
-
+.app {
   padding: calc(2 * var(--pad));
   font-size: calc(0.625vmin + 0.75rem);
-
-  background-color: #efefef;
+  background-color: #f8f8f8;
+  height: 100vh;
 }
 
-.list {
+ul {
   list-style-type: none;
   margin: 0; 
   padding: 0;
+}
+
+.header {
+  width: 100%;
+  position: relative;
+	background: linear-gradient(141deg, cyan 0%, rebeccapurple 40%, deeppink 90%);
+} 
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.errorBoundary {
+  text-align: center;
 }

@@ -1,6 +1,5 @@
 import React from 'react';
-// import Context from '../../Context';
-import { SearchTermContext } from '../../App';
+import './styles.css';
 
 interface Props {
   updateData: (a: string) => void;
@@ -22,35 +21,28 @@ class SearchBar extends React.Component<Props> {
 
   render() {
     return (
-      <SearchTermContext.Consumer>
-        {(searchTerm) => (
-          <div className="search">
-            <form onSubmit={this.handleSubmit}>
-              <div className="search-field">
-                <label className="search-label"></label>
-                <input
-                  className="search-input"
-                  type="text"
-                  onChange={this.handleChange}
-                  // defaultValue={
-                  //   localStorage.getItem('searchTerm') || this.props.searchTerm
-                  // }
-                  defaultValue={
-                    localStorage.getItem('searchTerm') || searchTerm
-                  }
-                />
-              </div>
-              <button
-                className="search-button"
-                type="submit"
-                onClick={this.handleClick}
-              >
-                Search
-              </button>
-            </form>
+      <div className="search">
+        <form className="search-form" onSubmit={this.handleSubmit}>
+          <div>
+            <input
+              className="search-input"
+              type="text"
+              onChange={this.handleChange}
+              defaultValue={
+                localStorage.getItem('searchTerm') || this.props.searchTerm
+              }
+              placeholder="Enter name"
+            />
           </div>
-        )}
-      </SearchTermContext.Consumer>
+          <button
+            className="search-button"
+            type="submit"
+            onClick={this.handleClick}
+          >
+            Search
+          </button>
+        </form>
+      </div>
     );
   }
 }

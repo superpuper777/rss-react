@@ -3,15 +3,16 @@ import './App.css';
 
 import List from './components/List';
 import SearchBar from './components/SearchBar';
+import Loading from './components/Loading';
+import CrashButton from './components/CrashButton';
 
-interface Props {}
 interface State {
   searchTerm: string;
   people: Array<Record<string, string>>;
   isError: boolean;
 }
 export const SearchTermContext = React.createContext('');
-class App extends React.Component<Props, State> {
+class App extends React.Component<State> {
   state = {
     searchTerm: '',
     people: [],
@@ -22,15 +23,15 @@ class App extends React.Component<Props, State> {
     this.setState({ searchTerm: value });
   };
 
+  updateError = () => {
+    this.setState({ isError: true });
+  };
+
   onTermSubmit = async (searchTerm: string) => {
     const API = `https://swapi.dev/api/people/?search=${searchTerm}`;
     fetch(API)
       .then((response) => response.json())
       .then((data) => this.setState({ people: data.results }));
-  };
-
-  handleClick = () => {
-    this.setState({ isError: true });
   };
 
   componentDidMount() {
@@ -44,22 +45,24 @@ class App extends React.Component<Props, State> {
     const { people, searchTerm } = this.state;
 
     return (
-      <div>
-        <SearchTermContext.Provider value={this.state.searchTerm}>
+      <div className="app">
+        <header className="header">
+          <CrashButton updateError={this.updateError} />
           <SearchBar
             onFormSubmit={this.onTermSubmit}
             updateData={this.updateData}
             searchTerm={searchTerm}
           />
-          <List items={people} />
-          <button
-            className="search-button"
-            type="submit"
-            onClick={this.handleClick}
-          >
-            Crash app
-          </button>
-        </SearchTermContext.Provider>
+        </header>
+        {people.length ? (
+          <main>
+            <List items={people} />
+          </main>
+        ) : (
+          <main>
+            <Loading />
+          </main>
+        )}
       </div>
     );
   }
