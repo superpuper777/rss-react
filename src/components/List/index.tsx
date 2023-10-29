@@ -2,21 +2,21 @@ import React from 'react';
 import ListItem from './ListItem';
 import { PeopleItem } from './ListItem/type';
 
+import SearchContext from '../../context';
 import './styles.css';
 import '../../App.css';
 
-interface Props {
-  items: Array<PeopleItem>;
-}
+class List extends React.Component {
+  static contextType = SearchContext;
+  context!: React.ContextType<typeof SearchContext>;
 
-class List extends React.Component<Props> {
   render() {
-    const { items } = this.props;
+    const { people } = this.context;
 
     return (
       <div className="list">
         <ul className="cards">
-          {items.map((p) => (
+          {people.map((p) => (
             <li key={p.name}>
               <ListItem item={p} />
             </li>

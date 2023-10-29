@@ -1,20 +1,20 @@
 import React from 'react';
+import SearchContext from '../../context';
+import './styles.css';
 
-interface Props {
-  updateError: () => void;
-}
-class CrashButton extends React.Component<Props> {
+class CrashButton extends React.Component {
+  static contextType = SearchContext;
+  context!: React.ContextType<typeof SearchContext>;
+
   handleClick = () => {
-    this.props.updateError();
+    const { updateError } = this.context;
+
+    updateError();
   };
 
   render(): React.ReactNode {
     return (
-      <button
-        className="search-button"
-        type="submit"
-        onClick={this.handleClick}
-      >
+      <button className="crash-button" type="submit" onClick={this.handleClick}>
         Crash app
       </button>
     );

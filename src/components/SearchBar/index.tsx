@@ -1,25 +1,31 @@
 import React from 'react';
+import SearchContext from '../../context';
+import { getStorageByKey, setStorageByKey } from '../../utils/storage';
 import './styles.css';
 
-interface Props {
-  updateData: (a: string) => void;
-  onFormSubmit: (a: string) => void;
-  searchTerm: string;
-}
-class SearchBar extends React.Component<Props> {
+class SearchBar extends React.Component {
+  static contextType = SearchContext;
+  context!: React.ContextType<typeof SearchContext>;
+
   handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) =>
     event.preventDefault();
 
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.props.updateData(event.target.value);
+    const { updateData } = this.context;
+    updateData(event.target.value);
   };
 
   handleClick = () => {
-    this.props.onFormSubmit(this.props.searchTerm);
-    localStorage.setItem('searchTerm', this.props.searchTerm);
+    const { onTermSubmit, searchTerm } = this.context;
+
+    onTermSubmit(searchTerm);
+    setStorageByKey('searchTerm', searchTerm);
   };
 
   render() {
+    const { searchTerm } = this.context;
+    const currentSearchTerm = getStorageByKey('searchTerm');
+
     return (
       <div className="search">
         <form className="search-form" onSubmit={this.handleSubmit}>
@@ -28,9 +34,7 @@ class SearchBar extends React.Component<Props> {
               className="search-input"
               type="text"
               onChange={this.handleChange}
-              defaultValue={
-                localStorage.getItem('searchTerm') || this.props.searchTerm
-              }
+              defaultValue={currentSearchTerm || searchTerm}
               placeholder="Enter name"
             />
           </div>

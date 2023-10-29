@@ -3,23 +3,21 @@
 }
 
 .app {
-  padding: calc(2 * var(--pad));
   font-size: calc(0.625vmin + 0.75rem);
-  background-color: #f8f8f8;
   height: 100vh;
 }
 
 ul {
   list-style-type: none;
-  margin: 0; 
+  margin: 0;
   padding: 0;
 }
 
 .header {
   width: 100%;
   position: relative;
-	background: linear-gradient(141deg, cyan 0%, rebeccapurple 40%, deeppink 90%);
-} 
+  background: linear-gradient(141deg, cyan 0%, rebeccapurple 40%, deeppink 90%);
+}
 
 .main {
   display: flex;

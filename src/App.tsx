@@ -5,66 +5,33 @@ import List from './components/List';
 import SearchBar from './components/SearchBar';
 import Loading from './components/Loading';
 import CrashButton from './components/CrashButton';
+import SearchContext from './context';
+import { getStorageByKey } from './utils/storage';
 
-interface State {
-  searchTerm: string;
-  people: Array<Record<string, string>>;
-  isError: boolean;
-}
-
-interface Props {}
-export const SearchTermContext = React.createContext('');
-class App extends React.Component<Props, State> {
-  state = {
-    searchTerm: '',
-    people: [],
-    isError: false,
-  };
-
-  updateData = (value: string) => {
-    this.setState({ searchTerm: value });
-  };
-
-  updateError = () => {
-    this.setState({ isError: true });
-  };
-
-  onTermSubmit = async (searchTerm: string) => {
-    const API = `https://swapi.dev/api/people/?search=${searchTerm}`;
-    fetch(API)
-      .then((response) => response.json())
-      .then((data) => this.setState({ people: data.results }));
-  };
+class App extends React.Component {
+  static contextType = SearchContext;
+  context!: React.ContextType<typeof SearchContext>;
 
   componentDidMount() {
-    this.onTermSubmit(localStorage.getItem('searchTerm') || '');
+    const { onTermSubmit } = this.context;
+
+    onTermSubmit(getStorageByKey('searchTerm') || '');
   }
 
   render() {
-    if (this.state.isError) {
+    const { people, isError } = this.context;
+
+    if (isError) {
       throw new Error('I crashed!');
     }
-    const { people, searchTerm } = this.state;
 
     return (
       <div className="app">
         <header className="header">
-          <CrashButton updateError={this.updateError} />
-          <SearchBar
-            onFormSubmit={this.onTermSubmit}
-            updateData={this.updateData}
-            searchTerm={searchTerm}
-          />
+          <CrashButton />
+          <SearchBar />
         </header>
-        {people.length ? (
-          <main>
-            <List items={people} />
-          </main>
-        ) : (
-          <main>
-            <Loading />
-          </main>
-        )}
+        <main>{people.length ? <List /> : <Loading />}</main>
       </div>
     );
   }
