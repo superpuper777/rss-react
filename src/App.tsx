@@ -11,8 +11,10 @@ interface State {
   people: Array<Record<string, string>>;
   isError: boolean;
 }
+
+interface Props {}
 export const SearchTermContext = React.createContext('');
-class App extends React.Component<State> {
+class App extends React.Component<Props, State> {
   state = {
     searchTerm: '',
     people: [],
