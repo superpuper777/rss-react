@@ -6,21 +6,32 @@ import SearchBar from './components/SearchBar';
 import Loading from './components/Loading';
 import CrashButton from './components/CrashButton';
 import SearchContext from './context';
+import { fetchPeople, fetchPeopleBySearchTerm } from './api';
 import { getStorageByKey } from './utils/storage';
 
 const App = () => {
   const context = useContext(SearchContext);
-  const { onTermSubmit, isError, isLoading } = context;
+  const { setPeople, isError, isLoading, setIsLoading, searchTerm } = context;
 
   useEffect(() => {
-    onTermSubmit(getStorageByKey('searchTerm') || '');
-  }, [onTermSubmit]);
+    setIsLoading(true);
+
+    if (searchTerm === '') {
+      fetchPeople().then((data) => {
+        setPeople(data.results);
+        setIsLoading(false);
+      });
+    } else
+      fetchPeopleBySearchTerm(searchTerm).then((data) => {
+        setPeople(data.results);
+        setIsLoading(false);
+      });
+  }, []);
 
   if (isError) {
     throw new Error('I crashed!');
   }
 
-  console.log(isLoading);
   return (
     <div className="app">
       <header className="header">

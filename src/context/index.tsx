@@ -1,11 +1,14 @@
 import React, { createContext, useState } from 'react';
 import { PeopleItem } from '../components/List/ListItem/type';
-
+import { getStorageByKey } from '../utils/storage';
+import { fetchPeopleBySearchTerm } from '../api';
 export interface State {
   searchTerm: string;
   people: Array<PeopleItem>;
   isError: boolean;
   isLoading: boolean;
+  setIsLoading: (param: boolean) => void;
+  setPeople: (param: Array<PeopleItem>) => void;
 }
 
 export type ContextType = State & {
@@ -21,7 +24,9 @@ type Props = {
 const SearchContext = createContext<ContextType>({} as ContextType);
 
 export const ContextProvider = ({ children }: Props) => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>(
+    getStorageByKey('searchTerm') || ''
+  );
   const [people, setPeople] = useState<Array<PeopleItem>>([]);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -36,13 +41,10 @@ export const ContextProvider = ({ children }: Props) => {
 
   const onTermSubmit = async (searchTerm: string) => {
     setIsLoading(true);
-    const API = `https://swapi.dev/api/people/?search=${searchTerm}`;
-    fetch(API)
-      .then((response) => response.json())
-      .then((data) => {
-        setPeople(data.results);
-        setIsLoading(false);
-      });
+    fetchPeopleBySearchTerm(searchTerm).then((data) => {
+      setPeople(data.results);
+      setIsLoading(false);
+    });
   };
 
   return (
@@ -55,6 +57,8 @@ export const ContextProvider = ({ children }: Props) => {
         updateError,
         onTermSubmit,
         isLoading,
+        setPeople,
+        setIsLoading,
       }}
     >
       {children}
