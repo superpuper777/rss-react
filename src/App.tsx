@@ -1,4 +1,4 @@
-import React from 'react';
+import { useContext, useEffect } from 'react';
 import './App.css';
 
 import List from './components/List';
@@ -8,33 +8,28 @@ import CrashButton from './components/CrashButton';
 import SearchContext from './context';
 import { getStorageByKey } from './utils/storage';
 
-class App extends React.Component {
-  static contextType = SearchContext;
-  context!: React.ContextType<typeof SearchContext>;
+const App = () => {
+  const context = useContext(SearchContext);
+  const { onTermSubmit, isError, isLoading } = context;
 
-  componentDidMount() {
-    const { onTermSubmit } = this.context;
-
+  useEffect(() => {
     onTermSubmit(getStorageByKey('searchTerm') || '');
+  }, [onTermSubmit]);
+
+  if (isError) {
+    throw new Error('I crashed!');
   }
 
-  render() {
-    const { people, isError } = this.context;
-
-    if (isError) {
-      throw new Error('I crashed!');
-    }
-
-    return (
-      <div className="app">
-        <header className="header">
-          <CrashButton />
-          <SearchBar />
-        </header>
-        <main>{people.length ? <List /> : <Loading />}</main>
-      </div>
-    );
-  }
-}
+  console.log(isLoading);
+  return (
+    <div className="app">
+      <header className="header">
+        <CrashButton />
+        <SearchBar />
+      </header>
+      <main>{isLoading ? <Loading /> : <List />}</main>
+    </div>
+  );
+};
 
 export default App;

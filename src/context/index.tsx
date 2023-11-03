@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { createContext, useState } from 'react';
 import { PeopleItem } from '../components/List/ListItem/type';
 
 export interface State {
   searchTerm: string;
   people: Array<PeopleItem>;
   isError: boolean;
+  isLoading: boolean;
 }
 
 export type ContextType = State & {
@@ -13,53 +14,52 @@ export type ContextType = State & {
   onTermSubmit: (searchTerm: string) => void;
 };
 
-const SearchContext = React.createContext<ContextType>({} as ContextType);
+type Props = {
+  children: React.ReactNode;
+};
 
-export class ContextProvider extends Component<
-  { children: React.ReactNode },
-  State
-> {
-  state = {
-    searchTerm: '',
-    people: [],
-    isError: false,
+const SearchContext = createContext<ContextType>({} as ContextType);
+
+export const ContextProvider = ({ children }: Props) => {
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [people, setPeople] = useState<Array<PeopleItem>>([]);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const updateData = (value: string) => {
+    setSearchTerm(value);
   };
 
-  updateData = (value: string) => {
-    this.setState({ searchTerm: value });
+  const updateError = () => {
+    setIsError(true);
   };
 
-  updateError = () => {
-    this.setState({ isError: true });
-  };
-
-  onTermSubmit = async (searchTerm: string) => {
+  const onTermSubmit = async (searchTerm: string) => {
+    setIsLoading(true);
     const API = `https://swapi.dev/api/people/?search=${searchTerm}`;
     fetch(API)
       .then((response) => response.json())
-      .then((data) => this.setState({ people: data.results }));
+      .then((data) => {
+        setPeople(data.results);
+        setIsLoading(false);
+      });
   };
 
-  render() {
-    const { children } = this.props;
-    const { people, searchTerm, isError } = this.state;
-    const { updateData, updateError, onTermSubmit } = this;
-
-    return (
-      <SearchContext.Provider
-        value={{
-          people,
-          searchTerm,
-          isError,
-          updateData,
-          updateError,
-          onTermSubmit,
-        }}
-      >
-        {children}
-      </SearchContext.Provider>
-    );
-  }
-}
+  return (
+    <SearchContext.Provider
+      value={{
+        people,
+        searchTerm,
+        isError,
+        updateData,
+        updateError,
+        onTermSubmit,
+        isLoading,
+      }}
+    >
+      {children}
+    </SearchContext.Provider>
+  );
+};
 
 export default SearchContext;

@@ -1,54 +1,44 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import SearchContext from '../../context';
 import { getStorageByKey, setStorageByKey } from '../../utils/storage';
 import './styles.css';
 
-class SearchBar extends React.Component {
-  static contextType = SearchContext;
-  context!: React.ContextType<typeof SearchContext>;
+const SearchBar = () => {
+  const context = useContext(SearchContext);
+  const { searchTerm, onTermSubmit, updateData } = context;
 
-  handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) =>
+  const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) =>
     event.preventDefault();
 
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { updateData } = this.context;
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateData(event.target.value);
   };
 
-  handleClick = () => {
-    const { onTermSubmit, searchTerm } = this.context;
-
+  const handleClick = () => {
     onTermSubmit(searchTerm);
     setStorageByKey('searchTerm', searchTerm);
   };
 
-  render() {
-    const { searchTerm } = this.context;
-    const currentSearchTerm = getStorageByKey('searchTerm');
+  const currentSearchTerm = getStorageByKey('searchTerm');
 
-    return (
-      <div className="search">
-        <form className="search-form" onSubmit={this.handleSubmit}>
-          <div>
-            <input
-              className="search-input"
-              type="text"
-              onChange={this.handleChange}
-              defaultValue={currentSearchTerm || searchTerm}
-              placeholder="Enter name"
-            />
-          </div>
-          <button
-            className="search-button"
-            type="submit"
-            onClick={this.handleClick}
-          >
-            Search
-          </button>
-        </form>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="search">
+      <form className="search-form" onSubmit={handleSubmit}>
+        <div>
+          <input
+            className="search-input"
+            type="text"
+            onChange={handleChange}
+            defaultValue={currentSearchTerm || searchTerm}
+            placeholder="Enter name"
+          />
+        </div>
+        <button className="search-button" type="submit" onClick={handleClick}>
+          Search
+        </button>
+      </form>
+    </div>
+  );
+};
 
 export default SearchBar;
