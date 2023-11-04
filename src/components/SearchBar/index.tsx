@@ -3,7 +3,7 @@ import SearchContext from '../../context';
 import { getStorageByKey, setStorageByKey } from '../../utils/storage';
 import './styles.css';
 
-const SearchBar = () => {
+const SearchBar: React.FC = () => {
   const context = useContext(SearchContext);
   const { searchTerm, onTermSubmit, updateData } = context;
 

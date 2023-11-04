@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import SearchContext from '../../context';
 import './styles.css';
 
-const CrashButton = () => {
+const CrashButton: React.FC = () => {
   const context = useContext(SearchContext);
   const { updateError } = context;
 

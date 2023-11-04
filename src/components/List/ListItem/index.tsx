@@ -4,7 +4,7 @@ import './styles.css';
 interface Props {
   item: PeopleItem;
 }
-const ListItem = ({ item }: Props) => {
+const ListItem: React.FC<Props> = ({ item }: Props) => {
   return (
     <div className="card">
       <div className="container">

@@ -1,6 +1,11 @@
 #root {
   width: 100%;
 }
+.app-wrapper{
+  /* display: flex; */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
 
 .app {
   font-size: calc(0.625vmin + 0.75rem);

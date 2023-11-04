@@ -1,6 +1,6 @@
 import './styles.css';
 
-const Loading = () => {
+const Loading: React.FC = () => {
   return (
     <div className="loader-wrapper">
       <span className="loader"></span>
