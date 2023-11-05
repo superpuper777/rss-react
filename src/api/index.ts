@@ -2,11 +2,11 @@ const API = `https://swapi.dev/api/people/`;
 
 export const fetchPeopleBySearchTerm = async (
   searchTerm: string,
-  pageNumber = 1
+  currentPage: number
 ) => {
   try {
     const response = await fetch(
-      `${API}?search=${searchTerm}&page=${pageNumber}`,
+      `${API}?search=${searchTerm}&page=${currentPage}`,
       {
         method: 'GET',
       }

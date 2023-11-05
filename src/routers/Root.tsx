@@ -9,21 +9,26 @@ import CrashButton from '../components/CrashButton';
 import SearchContext from '../context';
 import { fetchPeopleBySearchTerm } from '../api';
 import { getStorageByKey } from '../utils/storage';
+import PaginationContext, {
+  ContextPaginationProvider,
+} from '../context/paginationContext';
 
 const Root = (): JSX.Element => {
   const context = useContext(SearchContext);
+  const paginationContext = useContext(PaginationContext);
   const { setPeople, isError, isLoading, setIsLoading } = context;
-
+  const { setTotalItems } = paginationContext;
   useEffect(() => {
     setIsLoading(true);
 
     fetchPeopleBySearchTerm(
-      '' || (getStorageByKey('searchTerm') as string)
+      '' || (getStorageByKey('searchTerm') as string),
+      1
     ).then((data) => {
       setPeople(data.results);
       setIsLoading(false);
     });
-  }, [setIsLoading, setPeople]);
+  }, [setIsLoading, setPeople, setTotalItems]);
 
   if (isError) {
     throw new Error('I crashed!');
@@ -36,7 +41,15 @@ const Root = (): JSX.Element => {
           <CrashButton />
           <SearchBar />
         </header>
-        <main>{isLoading ? <Loading /> : <List />}</main>
+        <main>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <ContextPaginationProvider>
+              <List />
+            </ContextPaginationProvider>
+          )}
+        </main>
       </div>
       <div id="detail">
         <Outlet />

@@ -1,7 +1,8 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { PeopleItem } from '../components/List/ListItem/type';
 import { getStorageByKey } from '../utils/storage';
 import { fetchPeopleBySearchTerm } from '../api';
+import PaginationContext from './paginationContext';
 export interface State {
   searchTerm: string;
   people: Array<PeopleItem>;
@@ -24,6 +25,8 @@ type Props = {
 const SearchContext = createContext<ContextType>({} as ContextType);
 
 export const ContextProvider = ({ children }: Props) => {
+  const context = useContext(PaginationContext);
+  const { currentPage, setTotalItems } = context;
   const [searchTerm, setSearchTerm] = useState<string>(
     getStorageByKey('searchTerm') || ''
   );
@@ -41,8 +44,9 @@ export const ContextProvider = ({ children }: Props) => {
 
   const onTermSubmit = async (searchTerm: string) => {
     setIsLoading(true);
-    fetchPeopleBySearchTerm(searchTerm).then((data) => {
+    fetchPeopleBySearchTerm(searchTerm, currentPage).then((data) => {
       setPeople(data.results);
+      setTotalItems(data.count);
       setIsLoading(false);
     });
   };
