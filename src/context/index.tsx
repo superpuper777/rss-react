@@ -1,8 +1,8 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { PeopleItem } from '../components/List/ListItem/type';
 import { getStorageByKey } from '../utils/storage';
 import { fetchPeopleBySearchTerm } from '../api';
-import PaginationContext from './paginationContext';
+
 export interface State {
   searchTerm: string;
   people: Array<PeopleItem>;
@@ -10,12 +10,14 @@ export interface State {
   isLoading: boolean;
   setIsLoading: (param: boolean) => void;
   setPeople: (param: Array<PeopleItem>) => void;
+  totalItems: number;
+  setTotalItems: (param: number) => void;
 }
 
 export type ContextType = State & {
   updateData: (value: string) => void;
   updateError: () => void;
-  onTermSubmit: (searchTerm: string) => void;
+  onTermSubmit: (searchTerm: string, currentPage: number) => void;
 };
 
 type Props = {
@@ -25,14 +27,13 @@ type Props = {
 const SearchContext = createContext<ContextType>({} as ContextType);
 
 export const ContextProvider = ({ children }: Props) => {
-  const context = useContext(PaginationContext);
-  const { currentPage, setTotalItems } = context;
   const [searchTerm, setSearchTerm] = useState<string>(
     getStorageByKey('searchTerm') || ''
   );
   const [people, setPeople] = useState<Array<PeopleItem>>([]);
   const [isError, setIsError] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [totalItems, setTotalItems] = useState(0);
 
   const updateData = (value: string) => {
     setSearchTerm(value);
@@ -42,11 +43,11 @@ export const ContextProvider = ({ children }: Props) => {
     setIsError(true);
   };
 
-  const onTermSubmit = async (searchTerm: string) => {
+  const onTermSubmit = async (searchTerm: string, currentPage: number) => {
     setIsLoading(true);
     fetchPeopleBySearchTerm(searchTerm, currentPage).then((data) => {
-      setPeople(data.results);
       setTotalItems(data.count);
+      setPeople(data.results);
       setIsLoading(false);
     });
   };
@@ -63,6 +64,8 @@ export const ContextProvider = ({ children }: Props) => {
         isLoading,
         setPeople,
         setIsLoading,
+        totalItems,
+        setTotalItems,
       }}
     >
       {children}

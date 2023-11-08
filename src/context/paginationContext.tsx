@@ -1,15 +1,14 @@
-import React, { createContext, useContext, useState } from 'react';
-import { PeopleItem } from '../components/List/ListItem/type';
-import SearchContext from '.';
+import React, { createContext, useState } from 'react';
 
 export interface State {
   currentPage: number;
   setCurrentPage: (param: number) => void;
   itemsPerPage: number;
   setItemsPerPage: (param: number) => void;
-  currentItems: Array<PeopleItem>;
-  totalItems: number;
-  setTotalItems: (param: number) => void;
+  nextPage: string;
+  setNextPage: (param: string) => void;
+  prevPage: string;
+  setPrevPage: (param: string) => void;
 }
 
 export type ContextType = State;
@@ -21,15 +20,11 @@ type Props = {
 const PaginationContext = createContext<ContextType>({} as ContextType);
 
 export const ContextPaginationProvider = ({ children }: Props) => {
-  const context = useContext(SearchContext);
-  const { people } = context;
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(5);
-  const [totalItems, setTotalItems] = useState(82);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = people.slice(indexOfFirstItem, indexOfLastItem);
+  const [nextPage, setNextPage] = useState('');
+  const [prevPage, setPrevPage] = useState('');
 
   return (
     <PaginationContext.Provider
@@ -38,9 +33,10 @@ export const ContextPaginationProvider = ({ children }: Props) => {
         setCurrentPage,
         itemsPerPage,
         setItemsPerPage,
-        currentItems,
-        totalItems,
-        setTotalItems,
+        nextPage,
+        setNextPage,
+        prevPage,
+        setPrevPage,
       }}
     >
       {children}

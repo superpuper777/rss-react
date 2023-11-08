@@ -9,15 +9,14 @@ import CrashButton from '../components/CrashButton';
 import SearchContext from '../context';
 import { fetchPeopleBySearchTerm } from '../api';
 import { getStorageByKey } from '../utils/storage';
-import PaginationContext, {
-  ContextPaginationProvider,
-} from '../context/paginationContext';
+import { ContextPaginationProvider } from '../context/paginationContext';
 
 const Root = (): JSX.Element => {
   const context = useContext(SearchContext);
-  const paginationContext = useContext(PaginationContext);
-  const { setPeople, isError, isLoading, setIsLoading } = context;
-  const { setTotalItems } = paginationContext;
+
+  const { setPeople, isError, isLoading, setIsLoading, setTotalItems } =
+    context;
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -26,6 +25,7 @@ const Root = (): JSX.Element => {
       1
     ).then((data) => {
       setPeople(data.results);
+      setTotalItems(data.count);
       setIsLoading(false);
     });
   }, [setIsLoading, setPeople, setTotalItems]);

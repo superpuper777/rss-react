@@ -1,10 +1,14 @@
 .pagination {
-display: flex;
-font-size: 20px;
-font-weight: 500;
+    display: flex;
+    font-size: 20px;
+    font-weight: 500;
 }
 
-.page-item{
-padding: 2rem;
-cursor: pointer;
+.page-item {
+    padding: 2rem;
+    cursor: pointer;
+}
+
+.page-link {
+    cursor: pointer;
 }
