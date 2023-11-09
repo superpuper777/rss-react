@@ -1,4 +1,5 @@
 import { Form } from 'react-router-dom';
+import '../components/Detail/style.css';
 
 const Details = () => {
   const contact = {
