@@ -21,7 +21,7 @@ const SearchBar: React.FC = () => {
 
   const handleClick = () => {
     const url = new URLSearchParams();
-    url.append('page', currentPage.toString());
+    url.append('page', currentPage?.toString());
     navigate({
       pathname,
       search: url.toString(),

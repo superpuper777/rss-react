@@ -1,8 +1,11 @@
 #root {
   width: 100%;
 }
-.app-wrapper{
-  /* display: flex; */
+.app-wrapper {
+  display: block;
+}
+
+.app-wrapper-with-details {
   display: grid;
   grid-template-columns: 1fr 1fr;
 }

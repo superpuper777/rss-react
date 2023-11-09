@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useLocation, useNavigate, useParams, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import ListItem from './ListItem';
 
 import './styles.css';
@@ -9,28 +9,18 @@ import '../../App.css';
 
 const List: React.FC = () => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
+
   const context = useContext(SearchContext);
   const { people } = context;
-  console.log(pathname);
 
-  const handleCardClick = (event: React.MouseEvent<HTMLElement>) =>
-    console.log(event.currentTarget);
-  // const handleCardClick = (id: number) => navigate(`${pathname}details/${id}`);
-  // () => handleCardClick(index + 1)
-  // const handleCardClick = (id: number) =>
-  //   navigate(`${pathname}details/${id}`, { replace: true });
-  // () => handleCardClick(index + 1)
-  const params = useParams();
-  console.log(params); // "hotspur"
+  const handleCardClick = (id: number) => navigate(`/details/${id}`);
+
   return (
     <div className="list">
-      <Pagination />
       {people?.length ? (
         <ul className="cards">
           {people?.map((p, index) => (
-            <li key={p.name} onClick={handleCardClick}>
-              <Link to={`details/1`}>Your Name</Link>
+            <li key={p.name} onClick={() => handleCardClick(index + 1)}>
               <ListItem item={p} />
             </li>
           ))}
@@ -40,6 +30,7 @@ const List: React.FC = () => {
           Oops, there are no people with that name
         </p>
       )}
+      <Pagination />
     </div>
   );
 };
