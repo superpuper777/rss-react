@@ -21,12 +21,12 @@ const SearchBar: React.FC = () => {
 
   const handleClick = () => {
     const url = new URLSearchParams();
-    url.append('page', currentPage?.toString());
+    url.append('page', currentPage?.toString() || '1');
     navigate({
       pathname,
       search: url.toString(),
     });
-    onTermSubmit(searchTerm, currentPage);
+    onTermSubmit(searchTerm, currentPage || 1);
     setStorageByKey('searchTerm', searchTerm);
   };
 

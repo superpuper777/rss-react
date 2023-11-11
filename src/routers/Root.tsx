@@ -25,7 +25,7 @@ const Root = (): JSX.Element => {
     setIsLoading(true);
 
     fetchPeopleBySearchTerm(
-      '' || (getStorageByKey('searchTerm') as string),
+      (getStorageByKey('searchTerm') as string) && '',
       1
     ).then((data) => {
       setPeople(data.results);
@@ -57,7 +57,7 @@ const Root = (): JSX.Element => {
           )}
         </main>
       </div>
-      <div id="detail">
+      <div id="detail" data-testid="details">
         <Outlet />
       </div>
     </div>

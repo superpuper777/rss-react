@@ -6,17 +6,22 @@ import './styles.css';
 import Pagination from '../Pagination';
 import SearchContext from '../../context';
 import '../../App.css';
+import { getStorageByKey } from '../../utils/storage';
 
 const List: React.FC = () => {
   const navigate = useNavigate();
 
   const context = useContext(SearchContext);
-  const { people } = context;
+  const { people, onTermSubmit } = context;
 
-  const handleCardClick = (id: number) => navigate(`/details/${id}`);
+  const handleCardClick = (id: number) => {
+    onTermSubmit((getStorageByKey('searchTerm') as string) && '', 1);
+    navigate(`/details/${id}`);
+  };
 
   return (
-    <div className="list">
+    <div className="list" data-testid="list">
+      <div data-testid="card-count">{people?.length}</div>
       {people?.length ? (
         <ul className="cards">
           {people?.map((p, index) => (
@@ -26,7 +31,7 @@ const List: React.FC = () => {
           ))}
         </ul>
       ) : (
-        <p className="list-warning-text">
+        <p className="list-warning-text" data-testid="list-warning-text">
           Oops, there are no people with that name
         </p>
       )}
