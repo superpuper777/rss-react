@@ -19,7 +19,7 @@ const Root = (): JSX.Element => {
     context;
 
   const { pathname } = useLocation();
-  const isDetailsShowed = pathname.includes('details');
+  const isDetailsShowed = pathname?.includes('details');
 
   useEffect(() => {
     setIsLoading(true);

@@ -1,4 +1,7 @@
+import { ReactElement } from 'react';
+import { render } from '@testing-library/react';
 import { fetchPeopleBySearchTerm } from '../../api';
+import { ContextProvider } from '../../context/index.tsx';
 
 export const peopleResponse = {
   count: 1,
@@ -67,11 +70,15 @@ export const item = {
   vehicles: [],
 };
 
-// const renderWithRouter = (ui: ReactElement, { route = '/' } = {}) => {
-//   window.history.pushState({}, 'Test page', route);
-
-//   return {
-//     user: userEvent.setup(),
-//     ...render(ui, { wrapper: BrowserRouter }),
-//   };
-// };
+interface ContextGroupProps {
+  providerProps: Record<string, boolean>;
+}
+export const customRender = (
+  ui: ReactElement,
+  { providerProps, ...renderOptions }: ContextGroupProps
+) => {
+  return render(
+    <ContextProvider {...providerProps}>{ui}</ContextProvider>,
+    renderOptions
+  );
+};

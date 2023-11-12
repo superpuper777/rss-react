@@ -4,12 +4,30 @@ import { useNavigate, useParams } from 'react-router-dom';
 import SearchContext from '../context';
 import '../components/Detail/style.css';
 import { getStorageByKey } from '../utils/storage';
-// import { PeopleItem } from '../components/List/ListItem/type';
+
 import { fetchPeopleBySearchTerm } from '../api';
 import Loading from '../components/Loading';
+import { PeopleItem } from '../components/List/ListItem/type';
 
 const Details: React.FC = () => {
-  const [person, setPerson] = useState({});
+  const [person, setPerson] = useState<PeopleItem>({
+    birth_year: '',
+    created: '',
+    edited: '',
+    eye_color: '',
+    films: [],
+    gender: '',
+    hair_color: '',
+    height: '',
+    homeworld: '',
+    mass: '',
+    name: '',
+    skin_color: '',
+    species: [],
+    starships: [],
+    url: '',
+    vehicles: [],
+  });
   const navigate = useNavigate();
 
   const context = useContext(SearchContext);
@@ -17,16 +35,6 @@ const Details: React.FC = () => {
 
   const params = useParams();
   const id = params?.peopleId as string;
-
-  // useEffect(() => {
-  //   const people: Array<PeopleItem> = onTermSubmit(
-  //     (getStorageByKey('searchTerm') as string) && '',
-  //     1
-  //   );
-  //   const id = params?.peopleId as string;
-  //   const currentItem = people?.splice(Number(id) - 1, 1).pop();
-  //   setPerson(currentItem || {});
-  // }, []);
 
   useEffect(() => {
     setIsLoading(true);
@@ -36,14 +44,13 @@ const Details: React.FC = () => {
       1
     ).then((data) => {
       setPeople(data.results);
-      // setPerson(data.results[Number(id) - 1]);
+      setPerson(data.results[Number(id) - 1]);
       setIsLoading(false);
     });
   }, [setIsLoading, setPeople, setPerson, id]);
 
   console.log(people, person);
 
-  const currentItem = people[Number(id) - 1];
   const {
     name,
     height,
@@ -54,7 +61,7 @@ const Details: React.FC = () => {
     birth_year,
     gender,
     homeworld,
-  } = currentItem;
+  } = person;
 
   const handleClose = () => {
     navigate('/');
