@@ -75,46 +75,69 @@ const Details: React.FC = () => {
       ) : (
         <div className="container">
           <h2>
-            <b>{name}</b>
+            <b data-testid="card-name">{name}</b>
           </h2>
           <div className="container-group">
             <p>
-              Height: <span className="details-info">{height}</span>
+              Height:{' '}
+              <span className="details-info" data-testid="card-height">
+                {height}
+              </span>
             </p>
             <p>
-              Mass: <span className="details-info">{mass}</span>
-            </p>
-          </div>
-          <div className="container-group">
-            <p>
-              Hair color: <span className="details-info">{hair_color}</span>
-            </p>
-            <p>
-              Skin color: <span className="details-info">{skin_color}</span>
-            </p>
-            <p>
-              Eye color: <span className="details-info">{eye_color}</span>
+              Mass:{' '}
+              <span className="details-info" data-testid="card-mass">
+                {mass}
+              </span>
             </p>
           </div>
           <div className="container-group">
             <p>
-              Birthday: <span className="details-info">{birth_year}</span>
+              Hair color:{' '}
+              <span className="details-info" data-testid="card-hair_color">
+                {hair_color}
+              </span>
             </p>
             <p>
-              Gender: <span className="details-info">{gender}</span>
+              Skin color:{' '}
+              <span className="details-info" data-testid="card-skin_color">
+                {skin_color}
+              </span>
+            </p>
+            <p>
+              Eye color:{' '}
+              <span className="details-info" data-testid="card-eye_color">
+                {eye_color}
+              </span>
+            </p>
+          </div>
+          <div className="container-group">
+            <p>
+              Birthday:{' '}
+              <span className="details-info" data-testid="card-birth_year">
+                {birth_year}
+              </span>
+            </p>
+            <p>
+              Gender:{' '}
+              <span className="details-info" data-testid="card-gender">
+                {gender}
+              </span>
             </p>
           </div>
 
           <p>
             Homeworld:{' '}
-            <span className="details-info">
+            <span className="details-info" data-testid="card-homeworld">
               <a href={homeworld}>{homeworld}</a>
             </span>
           </p>
         </div>
       )}
 
-      <button onClick={handleClose}>Close</button>
+      <button onClick={handleClose} data-testid="close-button">
+        Close
+      </button>
     </div>
   );
 };

@@ -42,7 +42,7 @@ const Root = (): JSX.Element => {
     <div
       className={isDetailsShowed ? 'app-wrapper-with-details' : 'app-wrapper'}
     >
-      <div className="app">
+      <div className="app" data-testid="app">
         <header className="header">
           <CrashButton />
           <SearchBar />

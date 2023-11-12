@@ -3,12 +3,11 @@ import userEvent from '@testing-library/user-event';
 
 import { expect, test, describe, vi } from 'vitest';
 import '@testing-library/jest-dom';
-// import { BrowserRouter } from 'react-router-dom';
+
 import ListItem from '../../components/List/ListItem';
 import Details from '../../routers/details';
-import { peopleResponse, getPeople, item, customRender } from './mocks';
+import { peopleResponse, getPeople, item, customRender } from '../mocks';
 import Root from '../../routers/Root';
-// import { ReactElement } from 'react';
 
 const mockUsedNavigate = vi.fn();
 const mockUsedLocation = vi.fn();
@@ -20,15 +19,6 @@ vi.mock('react-router-dom', async () => ({
   useNavigate: () => mockUsedNavigate,
   useLocation: () => mockUsedLocation,
 }));
-
-// const renderWithRouter = (ui: ReactElement, { route = '/' } = {}) => {
-//   window.history.pushState({}, 'Test page', route);
-
-//   return {
-//     user: userEvent.setup(),
-//     ...render(ui, { wrapper: BrowserRouter }),
-//   };
-// };
 
 describe('testing ListItem Component', () => {
   test('component renders the relevant card data', () => {

@@ -3,7 +3,7 @@ import './styles.css';
 const Loading: React.FC = () => {
   return (
     <div className="loader-wrapper">
-      <span className="loader"></span>
+      <span className="loader" data-testid="loader"></span>
     </div>
   );
 };
