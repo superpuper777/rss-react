@@ -3,6 +3,7 @@ import { expect, test, vi, describe } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
+import { renderWithProviders } from '../../utils/test-utils';
 import { customRender } from '../mocks';
 
 import Details from '../../routers/details';
@@ -37,7 +38,8 @@ describe('testing Details Component', () => {
     const closeButton = getByTestId('close-button');
     const user = userEvent.setup();
     await user.click(closeButton);
-    customRender(<Root />, { providerProps });
+    // customRender(<Root />), { providerProps });
+    renderWithProviders(<Root />);
     expect(screen.getByTestId('app')).toBeDefined();
   });
 });

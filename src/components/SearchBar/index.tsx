@@ -1,11 +1,17 @@
 import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SearchContext from '../../context';
 import { getStorageByKey, setStorageByKey } from '../../utils/storage';
 import './styles.css';
 import PaginationContext from '../../context/paginationContext';
+import { useAppDispatch } from '../../store/store';
+import { changeInput } from '../../store/search/searchSlice';
+import { getSearchValue } from '../../store/search/searchSelectors';
 
 const SearchBar: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const inputValue = useSelector(getSearchValue);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const context = useContext(SearchContext);
@@ -17,6 +23,7 @@ const SearchBar: React.FC = () => {
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     updateData(event.target.value);
+    dispatch(changeInput({ value: event.target.value }));
   };
 
   const handleClick = () => {
@@ -40,7 +47,8 @@ const SearchBar: React.FC = () => {
             className="search-input"
             type="text"
             onChange={handleChange}
-            defaultValue={currentSearchTerm || searchTerm}
+            //|| searchTerm
+            defaultValue={currentSearchTerm || inputValue}
             placeholder="Enter name"
           />
         </div>

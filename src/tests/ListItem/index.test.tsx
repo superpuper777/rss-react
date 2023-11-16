@@ -8,6 +8,7 @@ import ListItem from '../../components/List/ListItem';
 import Details from '../../routers/details';
 import { peopleResponse, getPeople, item, customRender } from '../mocks';
 import Root from '../../routers/Root';
+import { renderWithProviders } from '../../utils/test-utils';
 
 const mockUsedNavigate = vi.fn();
 const mockUsedLocation = vi.fn();
@@ -37,7 +38,8 @@ describe('testing ListItem Component', () => {
     };
     const card = getAllByTestId('card');
     await user.click(card[0]);
-    customRender(<Details />, { providerProps });
+    renderWithProviders(<Details />);
+    // customRender(<Details />, { providerProps });
     const { getByTestId } = customRender(<Root />, { providerProps });
     expect(getByTestId('details')).toBeDefined();
   });

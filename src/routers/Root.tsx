@@ -9,12 +9,16 @@ import List from '../components/List';
 import SearchBar from '../components/SearchBar';
 import Loading from '../components/Loading';
 import CrashButton from '../components/CrashButton';
-
+import { getPeople } from '../store/people/peopleSelectors';
+import { fetchPeople } from '../store/people/peopleSlice';
+import { useAppDispatch, useAppSelector } from '../store/store';
 import { getStorageByKey } from '../utils/storage';
 
 const Root = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const context = useContext(SearchContext);
-
+  const people = useAppSelector(getPeople);
+  console.log(people);
   const { setPeople, isError, isLoading, setIsLoading, setTotalItems } =
     context;
 
@@ -32,7 +36,8 @@ const Root = (): JSX.Element => {
       setTotalItems(data.count);
       setIsLoading(false);
     });
-  }, [setIsLoading, setPeople, setTotalItems]);
+    dispatch(fetchPeople());
+  }, [setIsLoading, setPeople, setTotalItems, dispatch]);
 
   if (isError) {
     throw new Error('I crashed!');
