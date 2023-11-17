@@ -1,11 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getStorageByKey } from '../../utils/storage';
 
 export interface SearchState {
   value: string;
 }
 
+console.log(getStorageByKey('searchTerm'));
 const initialState: SearchState = {
-  value: '',
+  value: (getStorageByKey('searchTerm') as string) || '',
 };
 
 const searchSlice = createSlice({

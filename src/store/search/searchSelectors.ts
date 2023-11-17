@@ -1,3 +1,4 @@
 import { RootState } from '../store';
 
-export const getSearchValue = (state: RootState) => state.search.value;
+export const getSearchValue = (state: RootState) =>
+  state.rootReducer.search?.value;

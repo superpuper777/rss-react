@@ -1,11 +1,14 @@
 import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import PaginationContext from '../../context/paginationContext';
+import { useAppDispatch } from '../../store/store';
+import { changePage } from '../../store/pagination/paginationSlice';
 
 import './styles.css';
 import SearchContext from '../../context';
 
 const Pagination: React.FC = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const pagContext = useContext(PaginationContext);
@@ -21,6 +24,7 @@ const Pagination: React.FC = () => {
 
   const handleClick = (number: number) => {
     setCurrentPage(number);
+    dispatch(changePage({ currentPage: number }));
     const url = new URLSearchParams();
     onTermSubmit(searchTerm, number);
     url.append('page', number.toString());

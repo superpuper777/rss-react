@@ -1,4 +1,4 @@
-const API = `https://swapi.dev/api/people/`;
+export const API = `https://swapi.dev/api/people/`;
 
 export const fetchPeopleBySearchTerm = async (
   searchTerm: string,

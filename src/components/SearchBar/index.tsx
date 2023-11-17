@@ -1,23 +1,29 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import SearchContext from '../../context';
 import { getStorageByKey, setStorageByKey } from '../../utils/storage';
 import './styles.css';
-import PaginationContext from '../../context/paginationContext';
-import { useAppDispatch } from '../../store/store';
+// import PaginationContext from '../../context/paginationContext';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 import { changeInput } from '../../store/search/searchSlice';
 import { getSearchValue } from '../../store/search/searchSelectors';
+import { useLazyGetPeopleByNameQuery } from '../../store/services/people';
+import { getCurrentPage } from '../../store/pagination/paginationSelectors';
 
 const SearchBar: React.FC = () => {
   const dispatch = useAppDispatch();
-  const inputValue = useSelector(getSearchValue);
+  const inputValue = useAppSelector(getSearchValue);
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const context = useContext(SearchContext);
-  const { searchTerm, onTermSubmit, updateData } = context;
-  const pagContext = useContext(PaginationContext);
-  const { currentPage } = pagContext;
+  const { updateData } = context;
+  // const pagContext = useContext(PaginationContext);
+  // const { currentPage } = pagContext;
+  //[trigger, result, lastPromiseInfo]
+  const [trigger] = useLazyGetPeopleByNameQuery();
+  const searchTerm = useAppSelector(getSearchValue);
+  const currentPage = useAppSelector(getCurrentPage);
+
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) =>
     event.preventDefault();
 
@@ -33,7 +39,8 @@ const SearchBar: React.FC = () => {
       pathname,
       search: url.toString(),
     });
-    onTermSubmit(searchTerm, currentPage || 1);
+    // onTermSubmit(searchTerm, currentPage || 1);
+    trigger({ searchTerm, currentPage });
     setStorageByKey('searchTerm', searchTerm);
   };
 

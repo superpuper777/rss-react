@@ -1,13 +1,22 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
+
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 import rootReducer from './reducers';
+import { peopleApi } from './services/people';
 
 const store = configureStore({
-  reducer: rootReducer,
+  reducer: {
+    rootReducer,
+    [peopleApi.reducerPath]: peopleApi.reducer,
+  },
   devTools: true,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(peopleApi.middleware),
 });
 
-export type RootState = ReturnType<typeof rootReducer>; //store.getState
+setupListeners(store.dispatch);
+export type RootState = ReturnType<typeof store.getState>; //store.getState rootReducer
 
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch: () => AppDispatch = useDispatch;
