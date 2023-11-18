@@ -1,31 +1,43 @@
-import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ListItem from './ListItem';
 
-import './styles.css';
+import { useAppSelector } from '../../store/store';
+import { getSearchValue } from '../../store/search/searchSelectors';
+import {
+  useGetPeopleByNameQuery,
+  useLazyGetPeopleByNameQuery,
+} from '../../store/services/people';
+import { getCurrentPage } from '../../store/pagination/paginationSelectors';
+
+import ListItem from './ListItem';
 import Pagination from '../Pagination';
-import SearchContext from '../../context';
 import '../../App.css';
-import { getStorageByKey } from '../../utils/storage';
+import './styles.css';
 
 const List: React.FC = () => {
   const navigate = useNavigate();
+  const [trigger] = useLazyGetPeopleByNameQuery();
 
-  const context = useContext(SearchContext);
-  const { people, onTermSubmit } = context;
+  const currentPage = useAppSelector(getCurrentPage);
+  const searchTerm = useAppSelector(getSearchValue);
 
   const handleCardClick = (id: number) => {
-    onTermSubmit((getStorageByKey('searchTerm') as string) && '', 1);
+    trigger({ searchTerm, currentPage });
     navigate(`/details/${id}`);
   };
 
+  const { data, error, isLoading } = useGetPeopleByNameQuery({
+    searchTerm,
+    currentPage,
+  });
+  console.log(data?.results, error, isLoading);
+  const people = data?.results;
   return (
     <div className="list" data-testid="list">
       <div data-testid="card-count">{people?.length}</div>
       {people?.length ? (
         <ul className="cards">
           {people?.map((p, index) => (
-            <li key={p.name} onClick={() => handleCardClick(index + 1)}>
+            <li key={p.name} onClick={() => handleCardClick(+index + 1)}>
               <ListItem item={p} />
             </li>
           ))}
