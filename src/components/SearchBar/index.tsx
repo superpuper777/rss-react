@@ -1,35 +1,28 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import SearchContext from '../../context';
-import { getStorageByKey, setStorageByKey } from '../../utils/storage';
-import './styles.css';
-// import PaginationContext from '../../context/paginationContext';
+
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { changeInput } from '../../store/search/searchSlice';
 import { getSearchValue } from '../../store/search/searchSelectors';
 import { useLazyGetPeopleByNameQuery } from '../../store/services/people';
 import { getCurrentPage } from '../../store/pagination/paginationSelectors';
+import { setStorageByKey } from '../../utils/storage';
+import './styles.css';
 
 const SearchBar: React.FC = () => {
   const dispatch = useAppDispatch();
-  const inputValue = useAppSelector(getSearchValue);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const context = useContext(SearchContext);
-  const { updateData } = context;
-  // const pagContext = useContext(PaginationContext);
-  // const { currentPage } = pagContext;
-  //[trigger, result, lastPromiseInfo]
   const [trigger] = useLazyGetPeopleByNameQuery();
-  const searchTerm = useAppSelector(getSearchValue);
+
   const currentPage = useAppSelector(getCurrentPage);
+  const searchTerm = useAppSelector(getSearchValue);
 
   const handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) =>
     event.preventDefault();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    updateData(event.target.value);
-    dispatch(changeInput({ value: event.target.value }));
+    dispatch(changeInput(event.target.value));
   };
 
   const handleClick = () => {
@@ -39,12 +32,10 @@ const SearchBar: React.FC = () => {
       pathname,
       search: url.toString(),
     });
-    // onTermSubmit(searchTerm, currentPage || 1);
+
     trigger({ searchTerm, currentPage });
     setStorageByKey('searchTerm', searchTerm);
   };
-
-  const currentSearchTerm = getStorageByKey('searchTerm');
 
   return (
     <div className="search">
@@ -54,8 +45,7 @@ const SearchBar: React.FC = () => {
             className="search-input"
             type="text"
             onChange={handleChange}
-            //|| searchTerm
-            defaultValue={currentSearchTerm || inputValue}
+            defaultValue={searchTerm}
             placeholder="Enter name"
           />
         </div>

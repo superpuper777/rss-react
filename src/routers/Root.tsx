@@ -1,10 +1,10 @@
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import '../App.css';
 
 import SearchContext from '../context';
 import { ContextPaginationProvider } from '../context/paginationContext';
-import { fetchPeopleBySearchTerm } from '../api';
+// import { fetchPeopleBySearchTerm } from '../api';
 import List from '../components/List';
 import SearchBar from '../components/SearchBar';
 import Loading from '../components/Loading';
@@ -12,14 +12,15 @@ import CrashButton from '../components/CrashButton';
 import { getPeople } from '../store/people/peopleSelectors';
 import { getSearchValue } from '../store/search/searchSelectors';
 import { getCurrentPage } from '../store/pagination/paginationSelectors';
-import { fetchPeople } from '../store/people/peopleSlice';
-import { useAppDispatch, useAppSelector } from '../store/store';
-import { getStorageByKey } from '../utils/storage';
+// import { fetchPeople } from '../store/people/peopleSlice';
+// useAppDispatch,
+import { useAppSelector } from '../store/store';
+// import { getStorageByKey } from '../utils/storage';
 import { useGetPeopleByNameQuery } from '../store/services/people';
 // import { useLazyGetPeopleByNameQuery } from '../store/services/people';
 
 const Root = (): JSX.Element => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const context = useContext(SearchContext);
   const people = useAppSelector(getPeople);
   const searchTerm = useAppSelector(getSearchValue);
@@ -27,27 +28,26 @@ const Root = (): JSX.Element => {
   // const count = useAppSelector((state) => state.rootReducer.search.value);
 
   console.log(people, searchTerm, currentPage);
-  const { setPeople, isError, isLoading, setIsLoading, setTotalItems } =
-    context;
+  const { isError, isLoading } = context;
 
   const { pathname } = useLocation();
   const isDetailsShowed = pathname?.includes('details');
   const { data, error } = useGetPeopleByNameQuery({ searchTerm, currentPage });
   console.log(data?.results, error, isLoading);
 
-  useEffect(() => {
-    setIsLoading(true);
+  // useEffect(() => {
+  //   setIsLoading(true);
 
-    fetchPeopleBySearchTerm(
-      (getStorageByKey('searchTerm') as string) && '',
-      1
-    ).then((data) => {
-      setPeople(data.results);
-      setTotalItems(data.count);
-      setIsLoading(false);
-    });
-    dispatch(fetchPeople());
-  }, [setIsLoading, setPeople, setTotalItems, dispatch]);
+  //   fetchPeopleBySearchTerm(
+  //     (getStorageByKey('searchTerm') as string) && '',
+  //     1
+  //   ).then((data) => {
+  //     setPeople(data.results);
+  //     setTotalItems(data.count);
+  //     setIsLoading(false);
+  //   });
+  //   dispatch(fetchPeople());
+  // }, [setIsLoading, setPeople, setTotalItems, dispatch]);
 
   if (isError) {
     throw new Error('I crashed!');
