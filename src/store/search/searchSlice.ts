@@ -5,7 +5,6 @@ export interface SearchState {
   value: string;
 }
 
-console.log(getStorageByKey('searchTerm'));
 const initialState: SearchState = {
   value: (getStorageByKey('searchTerm') as string) || '',
 };

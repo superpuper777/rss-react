@@ -6,7 +6,6 @@ import Root from './routers/Root.tsx';
 import ErrorPage from './routers/error-page.tsx';
 import Details from './routers/details.tsx';
 import ErrorBoundary from './components/ErrorBoundary/index.tsx';
-import { ContextProvider } from './context/index.tsx';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -26,11 +25,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <>
     <ErrorBoundary>
-      <ContextProvider>
-        <Provider store={store}>
-          <RouterProvider router={router} />
-        </Provider>
-      </ContextProvider>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </ErrorBoundary>
   </>
 );

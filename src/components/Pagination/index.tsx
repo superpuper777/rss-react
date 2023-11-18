@@ -1,32 +1,44 @@
-import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import PaginationContext from '../../context/paginationContext';
-import { useAppDispatch } from '../../store/store';
-import { changePage } from '../../store/pagination/paginationSlice';
+import { useAppDispatch, useAppSelector } from '../../store/store';
 
+import { changePage } from '../../store/pagination/paginationSlice';
+import {
+  getCurrentPage,
+  getItemsPerPage,
+} from '../../store/pagination/paginationSelectors';
+import { getSearchValue } from '../../store/search/searchSelectors';
+import {
+  useGetPeopleByNameQuery,
+  useLazyGetPeopleByNameQuery,
+} from '../../store/services/people';
 import './styles.css';
-import SearchContext from '../../context';
 
 const Pagination: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const { pathname } = useLocation();
-  const pagContext = useContext(PaginationContext);
-  const { itemsPerPage, setCurrentPage } = pagContext;
+  const currentPage = useAppSelector(getCurrentPage);
+  const searchTerm = useAppSelector(getSearchValue);
+  const itemsPerPage = useAppSelector(getItemsPerPage);
 
-  const context = useContext(SearchContext);
-  const { totalItems, onTermSubmit, searchTerm } = context;
+  const [trigger] = useLazyGetPeopleByNameQuery();
 
+  const { data } = useGetPeopleByNameQuery({
+    searchTerm,
+    currentPage,
+  });
+
+  const totalItems = data?.count || 0;
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil(totalItems / itemsPerPage); i++) {
     pageNumbers.push(i);
   }
 
   const handleClick = (number: number) => {
-    setCurrentPage(number);
-    dispatch(changePage({ currentPage: number }));
+    dispatch(changePage(number));
     const url = new URLSearchParams();
-    onTermSubmit(searchTerm, number);
+    trigger({ searchTerm, currentPage });
     url.append('page', number.toString());
     navigate({
       pathname,

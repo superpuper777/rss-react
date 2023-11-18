@@ -1,13 +1,11 @@
-import { useContext } from 'react';
-import SearchContext from '../../context';
 import './styles.css';
+import { useAppDispatch } from '../../store/store';
+import { toggleError } from '../../store/crash/crashSlice';
 
 const CrashButton: React.FC = () => {
-  const context = useContext(SearchContext);
-  const { updateError } = context;
-
+  const dispatch = useAppDispatch();
   const handleClick = () => {
-    updateError();
+    dispatch(toggleError(true));
   };
 
   return (
