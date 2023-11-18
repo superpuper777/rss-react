@@ -18,4 +18,3 @@ export const peopleApi = createApi({
 
 export const { useGetPeopleByNameQuery, useLazyGetPeopleByNameQuery } =
   peopleApi;
-// export const { useGetPeopleByNameQuery } = peopleApi;

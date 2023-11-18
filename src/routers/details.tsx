@@ -1,55 +1,26 @@
-import { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useGetPeopleByNameQuery } from '../store/services/people';
+import { getSearchValue } from '../store/search/searchSelectors';
+import { getCurrentPage } from '../store/pagination/paginationSelectors';
+import { useAppSelector } from '../store/store';
 
-import SearchContext from '../context';
-import '../components/Detail/style.css';
-import { getStorageByKey } from '../utils/storage';
-
-import { fetchPeopleBySearchTerm } from '../api';
 import Loading from '../components/Loading';
-import { PeopleItem } from '../components/List/ListItem/type';
+import '../components/Detail/style.css';
 
 const Details: React.FC = () => {
-  const [person, setPerson] = useState<PeopleItem>({
-    birth_year: '',
-    created: '',
-    edited: '',
-    eye_color: '',
-    films: [],
-    gender: '',
-    hair_color: '',
-    height: '',
-    homeworld: '',
-    mass: '',
-    name: '',
-    skin_color: '',
-    species: [],
-    starships: [],
-    url: '',
-    vehicles: [],
-  });
   const navigate = useNavigate();
-
-  const context = useContext(SearchContext);
-  const { setIsLoading, setPeople, people, isLoading } = context;
-
   const params = useParams();
+
   const id = params?.peopleId as string;
+  const currentPage = useAppSelector(getCurrentPage);
+  const searchTerm = useAppSelector(getSearchValue);
 
-  useEffect(() => {
-    setIsLoading(true);
+  const { data, isLoading } = useGetPeopleByNameQuery({
+    searchTerm,
+    currentPage,
+  });
 
-    fetchPeopleBySearchTerm(
-      (getStorageByKey('searchTerm') as string) && '',
-      1
-    ).then((data) => {
-      setPeople(data.results);
-      setPerson(data.results[Number(id) - 1]);
-      setIsLoading(false);
-    });
-  }, [setIsLoading, setPeople, setPerson, id]);
-
-  console.log(people, person);
+  const info = data?.results[Number(id) - 1];
 
   const {
     name,
@@ -61,7 +32,7 @@ const Details: React.FC = () => {
     birth_year,
     gender,
     homeworld,
-  } = person;
+  } = info || {};
 
   const handleClose = () => {
     navigate('/');
