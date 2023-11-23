@@ -23,5 +23,5 @@ const paginationSlice = createSlice({
   },
 });
 
-export const { changePage } = paginationSlice.actions;
+export const { changePage, changeItemsPerPage } = paginationSlice.actions;
 export default paginationSlice.reducer;

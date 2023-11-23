@@ -1,7 +1,4 @@
-import { ReactElement } from 'react';
-import { render } from '@testing-library/react';
 import { fetchPeopleBySearchTerm } from '../api/index.ts';
-import { ContextProvider } from '../context/index.tsx';
 
 export const peopleResponse = {
   count: 1,
@@ -115,17 +112,4 @@ export const item = {
   starships: [],
   url: 'https://swapi.dev/api/people/7/',
   vehicles: [],
-};
-
-interface ContextGroupProps {
-  providerProps: Record<string, boolean>;
-}
-export const customRender = (
-  ui: ReactElement,
-  { providerProps, ...renderOptions }: ContextGroupProps
-) => {
-  return render(
-    <ContextProvider {...providerProps}>{ui}</ContextProvider>,
-    renderOptions
-  );
 };
