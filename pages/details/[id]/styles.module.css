@@ -1,0 +1,23 @@
+.details {
+    position: relative;
+    width: 100%;
+    padding: 20px;
+  }
+  
+  .cardInfo {
+    font-weight: 500;
+  }
+  
+  .container {
+    padding: 2px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
+  .containerGroup {
+    display: flex;
+    gap: 2rem;
+  }
+  

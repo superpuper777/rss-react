@@ -11,7 +11,7 @@ import {
   useGetPeopleByNameQuery,
   useLazyGetPeopleByNameQuery,
 } from '../../store/services/people';
-import './styles.css';
+import styles from './styles.module.css';
 
 const Pagination: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -49,9 +49,9 @@ const Pagination: React.FC = () => {
   return (
     <div>
       <nav>
-        <ul className="pagination">
+        <ul className={styles.pagination}>
           {pageNumbers.map((number) => (
-            <li key={number} className="page-item">
+            <li key={number} className={styles.pageItem}>
               <a onClick={() => handleClick(number)} className="page-link">
                 {number}
               </a>

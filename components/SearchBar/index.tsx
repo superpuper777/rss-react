@@ -7,7 +7,7 @@ import { getSearchValue } from '../../store/search/searchSelectors';
 import { useLazyGetPeopleByNameQuery } from '../../store/services/people';
 import { getCurrentPage } from '../../store/pagination/paginationSelectors';
 import { setStorageByKey } from '../../utils/storage';
-import './styles.css';
+import styles from './styles.module.css';
 
 const SearchBar: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -38,18 +38,22 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <div className="search">
-      <form className="search-form" onSubmit={handleSubmit}>
+    <div className={styles.search}>
+      <form className={styles.searchForm} onSubmit={handleSubmit}>
         <div>
           <input
-            className="search-input"
+            className={styles.searchInput}
             type="text"
             onChange={handleChange}
             defaultValue={searchTerm}
             placeholder="Enter name"
           />
         </div>
-        <button className="search-button" type="submit" onClick={handleClick}>
+        <button
+          className={styles.searchButton}
+          type="submit"
+          onClick={handleClick}
+        >
           Search
         </button>
       </form>

@@ -1,6 +1,7 @@
-import './styles.css';
 import { useAppDispatch } from '../../store/store';
 import { toggleError } from '../../store/crash/crashSlice';
+
+import styles from './styles.module.css';
 
 const CrashButton: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -9,7 +10,7 @@ const CrashButton: React.FC = () => {
   };
 
   return (
-    <button className="crash-button" type="submit" onClick={handleClick}>
+    <button className={styles.crashButton} type="submit" onClick={handleClick}>
       Crash app
     </button>
   );

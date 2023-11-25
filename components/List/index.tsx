@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useAppSelector } from '../../store/store';
 import { getSearchValue } from '../../store/search/searchSelectors';
 import {
@@ -9,10 +10,11 @@ import { getCurrentPage } from '../../store/pagination/paginationSelectors';
 import ListItem from './ListItem';
 import Pagination from '../Pagination';
 import Loading from '../Loading';
-import '../../styles/globals.css';
+import styles from './styles.module.css';
 
 const List: React.FC = () => {
   // const navigate = useNavigate();
+  const router = useRouter();
   const [trigger] = useLazyGetPeopleByNameQuery();
 
   const currentPage = useAppSelector(getCurrentPage);
@@ -22,6 +24,7 @@ const List: React.FC = () => {
     trigger({ searchTerm, currentPage });
     console.log(id);
     // navigate(`/details/${id}`);
+    router.push(`/details/${id}`);
   };
 
   const { data, isLoading } = useGetPeopleByNameQuery({
@@ -31,14 +34,14 @@ const List: React.FC = () => {
 
   const people = data?.results;
   return (
-    <div className="list" data-testid="list">
+    <div className={styles.list} data-testid="list">
       {isLoading ? (
         <Loading />
       ) : (
         <>
-          <div data-testid="card-count">{people?.length}</div>
+          <div data-testid={styles.cardCount}>{people?.length}</div>
           {people?.length ? (
-            <ul className="cards">
+            <ul className={styles.cards}>
               {people?.map((p, index) => (
                 <li key={p.name} onClick={() => handleCardClick(index + 1)}>
                   <ListItem item={p} />
@@ -46,7 +49,10 @@ const List: React.FC = () => {
               ))}
             </ul>
           ) : (
-            <p className="list-warning-text" data-testid="list-warning-text">
+            <p
+              className={styles.listWarningText}
+              data-testid="list-warning-text"
+            >
               Oops, there are no people with that name
             </p>
           )}

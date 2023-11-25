@@ -1,37 +1,37 @@
 import { PeopleItem } from './type';
-import './styles.css';
+import styles from './styles.module.css';
 
 interface Props {
   item: PeopleItem;
 }
 const ListItem: React.FC<Props> = ({ item }: Props) => {
   return (
-    <div className="card" data-testid="card">
-      <div className="container">
+    <div className={styles.card} data-testid="card">
+      <div className={styles.container}>
         <h4>
           <b data-testid="card-name">{item.name}</b>
         </h4>
         <p>
           Height:{' '}
-          <span className="card-info" data-testid="card-height">
+          <span className={styles.cardInfo} data-testid="card-height">
             {item.height}
           </span>
         </p>
         <p>
           Birthday:{' '}
-          <span className="card-info" data-testid="card-birth_year">
+          <span className={styles.cardInfo} data-testid="card-birth_year">
             {item.birth_year}
           </span>
         </p>
         <p>
           Gender:{' '}
-          <span className="card-info" data-testid="card-gender">
+          <span className={styles.cardInfo} data-testid="card-gender">
             {item.gender}
           </span>
         </p>
         <p>
           Homeworld:{' '}
-          <span className="card-info" data-testid="card-homeworld">
+          <span className={styles.cardInfo} data-testid="card-homeworld">
             <a href={item.homeworld}>{item.homeworld}</a>
           </span>
         </p>
