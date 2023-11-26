@@ -1,0 +1,14 @@
+.pagination {
+  display: flex;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.pageItem {
+  padding: 2rem;
+  cursor: pointer;
+}
+
+.pageLink {
+  cursor: pointer;
+}

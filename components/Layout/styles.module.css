@@ -1,0 +1,33 @@
+  .appWrapper {
+    display: block;
+  }
+  
+  .appWrapperWithDetails {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .app {
+    font-size: calc(0.625vmin + 0.75rem);
+    height: 100vh;
+  }
+  
+  
+  .header {
+    width: 100%;
+    position: relative;
+    background: linear-gradient(141deg, cyan 0%, rebeccapurple 40%, deeppink 90%);
+  }
+  
+  .main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+  }
+  
+  .errorBoundary {
+    text-align: center;
+  }
+  

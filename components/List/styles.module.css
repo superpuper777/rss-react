@@ -1,0 +1,19 @@
+.list {
+  padding: 4rem;
+  height: 100%;
+}
+
+.listWarningText {
+  font-size: 20px;
+  font-weight: 500;
+  color: #1597cf;
+}
+
+.cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  justify-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}

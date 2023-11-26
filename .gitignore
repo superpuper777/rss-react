@@ -12,6 +12,19 @@ dist
 dist-ssr
 *.local
 
+/.pnp
+.pnp.js
+
+# next.js
+/.next/
+/out/
+
+# testing
+/coverage
+
+# typescript
+*.tsbuildinfo
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
