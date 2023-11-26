@@ -9,11 +9,8 @@ import styles from './styles.module.css';
 
 const Details: React.FC = () => {
   const router = useRouter();
-  //   const navigate = useNavigate();
-  //   const params = useParams();
-  // const id = 2;
   const id = router.query.id;
-  //   const id = params?.peopleId as string;
+
   const currentPage = useAppSelector(getCurrentPage);
   const searchTerm = useAppSelector(getSearchValue);
 
@@ -39,7 +36,6 @@ const Details: React.FC = () => {
   const handleClose = () => {
     //   navigate('/');
     router.push('/');
-    console.log('navigate /');
   };
 
   return (

@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router';
-import { useAppSelector } from '../../store/store';
+import { useAppSelector, wrapper } from '../../store/store';
 import { getSearchValue } from '../../store/search/searchSelectors';
 import {
   useGetPeopleByNameQuery,
   useLazyGetPeopleByNameQuery,
+  getPeopleByName,
+  getRunningQueriesThunk,
 } from '../../store/services/people';
 import { getCurrentPage } from '../../store/pagination/paginationSelectors';
 
@@ -12,8 +14,21 @@ import Pagination from '../Pagination';
 import Loading from '../Loading';
 import styles from './styles.module.css';
 
+export const getServerSideProps = wrapper.getServerSideProps(
+  (store) => async () => {
+    const currentPage = useAppSelector(getCurrentPage);
+    const searchTerm = useAppSelector(getSearchValue);
+
+    store.dispatch(getPeopleByName.initiate({ searchTerm, currentPage }));
+
+    await Promise.all(store.dispatch(getRunningQueriesThunk()));
+    return {
+      props: {},
+    };
+  }
+);
+
 const List: React.FC = () => {
-  // const navigate = useNavigate();
   const router = useRouter();
   const [trigger] = useLazyGetPeopleByNameQuery();
 
@@ -22,8 +37,6 @@ const List: React.FC = () => {
 
   const handleCardClick = (id: number) => {
     trigger({ searchTerm, currentPage });
-    console.log(id);
-    // navigate(`/details/${id}`);
     router.push(`/details/${id}`);
   };
 

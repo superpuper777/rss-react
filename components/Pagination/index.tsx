@@ -1,6 +1,6 @@
 // import { useLocation, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/store';
-
+import { useRouter } from 'next/router';
 import { changePage } from '../../store/pagination/paginationSlice';
 import {
   getCurrentPage,
@@ -15,9 +15,8 @@ import styles from './styles.module.css';
 
 const Pagination: React.FC = () => {
   const dispatch = useAppDispatch();
-  // const navigate = useNavigate();
+  const router = useRouter();
 
-  // const { pathname } = useLocation();
   const currentPage = useAppSelector(getCurrentPage);
   const searchTerm = useAppSelector(getSearchValue);
   const itemsPerPage = useAppSelector(getItemsPerPage);
@@ -40,10 +39,11 @@ const Pagination: React.FC = () => {
     const url = new URLSearchParams();
     trigger({ searchTerm, currentPage });
     url.append('page', number.toString());
-    // navigate({
-    //   pathname,
-    //   search: url.toString(),
-    // });
+    router.push({
+      pathname: '/',
+      search: url.toString(),
+      // query: {  },
+    });
   };
 
   return (
